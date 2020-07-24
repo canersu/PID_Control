@@ -50,49 +50,20 @@ using the following settings:
 
 Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
 
-## Project Instructions and Rubric
+## PID.cpp
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+In PID.cpp, private variables initialized as stated in Init method lines between 12-14. To differentiate errors, UpdateError method is called which computes the differential error, sum error and proportional error. And finally TotalError method returns the multiplied calculated errors with Kp, Ki and Kd coefficients.
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+## Fine Tuning Kp Ki and Kd coefficients
 
-## Hints!
+To start tuning, I chose integral term 0.0 and proportional term 1.0, and find the optimal differential term. Increasing differential term caused overshoot, decreasing differential caused saggy turning behavior especially in road curvatures. I found the optimal value as 2.0.
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
+Then I started to tune proportional term by setting differential coefficient 2.0 and integral 0.0. Vehicle made "S" move in the center as I started to play around 3.0. I found the optimal proportional value as 0.2.
 
-## Call for IDE Profiles Pull Requests
+After P and D coefficients set, the last thing was to prevent drifting from the center of road. That is why integral coefficient dive in to game. A small value would be enough, 0.004 was solved the drift problem.
 
-Help your fellow students!
+## Future Optimizations
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
+Final optimizations takes long time. Twiddle optimization algorithm could be a good idea for some parts of circuits to observe the vehicle's movement and choose the best coefficient with the smallest Kp Ki and Kd error values.
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
+To drive smooth, also speed controller could be include to algorithm which makes the vehicle keep in same speed and better acceleration/deceleration behavior.
